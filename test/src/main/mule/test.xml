@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0109f60c-2ca0-4dc0-8f4c-905083dbda75" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="c17b0b98-69c5-4561-9d88-88b9253dac59" file="properties.properties" />
+	<flow name="testFlow" doc:id="fc32195c-43d9-4f59-bee1-24f180b9bb95" >
+		<http:listener doc:name="Listener" doc:id="574fc3c7-f332-4a7d-9aab-7298c892cc92" config-ref="HTTP_Listener_config" path="/test"/>
+		<ee:transform doc:name="Transform Message" doc:id="9c4c762a-c6b0-4a40-b2a6-e6ba9619efa0" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="a" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.a as Number]]></ee:set-variable>
+				<ee:set-variable variableName="b" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams.b as Number]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<set-payload doc:name="Set Payload" doc:id="3bd75d5c-e94d-49a3-bad1-79a777bb69c4" value="#[vars.a + vars.b]" mimeType="text/plain"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d7f9c176-185d-4107-9592-72def6ae52f9" message="#[payload]"/>
+	</flow>
+</mule>
