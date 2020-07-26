@@ -1,0 +1,22 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/b9c0d3a5-0a75-4643-8e6f-faf171fc7926/ # 
+title: Book
+version: 1.0 
+/books: 
+ get:
+   queryParameters:
+    name:
+      description: name of book
+      type: string
+      required: true
+      example: 'Da Vinci Code'
+    author:
+      description: author of book
+      type: string
+      required: true
+      example: 'R K narayana'
+   responses:
+     200:
+      
+        
+       
